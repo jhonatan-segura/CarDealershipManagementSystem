@@ -6,6 +6,7 @@ import {
   getModelLines,
   getVehicleById,
   registerVehicle,
+  sendVehicleToRepair,
   updateVehicleById,
   uploadMultipleImages,
 } from "../api/apiConnection";
@@ -62,6 +63,7 @@ const VehicleRegistrationModification: React.FC<Props> = ({ mode }) => {
   const [resultType, setResultType] = useState<"success" | "error">("success");
   const [imageIds, setImageIds] = useState<number[]>([]);
   const [imagesToDisplay, setImagesToDisplay] = useState<ImageDataWithId[]>([]);
+  const [vehicleIdGenerated, setVehicleIdGenerated] = useState<string>();
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -191,6 +193,28 @@ const VehicleRegistrationModification: React.FC<Props> = ({ mode }) => {
     setImagesToDisplay([]);
   };
 
+  const handleSendToRepair = async () => {
+    try {
+      if (vehicleIdGenerated) {
+        await sendVehicleToRepair(vehicleIdGenerated);
+        setShowModal(true);
+        setTitle("Ok");
+        setBodyText(["Vehículo enviado a reparación."]);
+        setLeftButtonText("Cerrar");
+        setRightButtonText("Enviar a reparación");
+        setCounterPosition("left");
+        setResultType("success");
+        clearPage();
+      }
+    } catch (error: any) {
+      setShowModal(true);
+      setTitle("¡Aviso!");
+      setBodyText([error.response.data.message]);
+      setLeftButtonText("Ok");
+      setResultType("error");
+    }
+  }
+
   const handleSave = async () => {
     let bodyRequest: VehicleBodyRequest = {
       plate: plate,
@@ -205,7 +229,8 @@ const VehicleRegistrationModification: React.FC<Props> = ({ mode }) => {
     };
 
     try {
-      await registerVehicle(bodyRequest);
+      const vehicleIdGenerated = await registerVehicle(bodyRequest);
+      setVehicleIdGenerated(vehicleIdGenerated.id);
       setShowModal(true);
       setTitle("Ok");
       setBodyText(["Vehículo creado correctamente"]);
@@ -240,7 +265,7 @@ const VehicleRegistrationModification: React.FC<Props> = ({ mode }) => {
       if (vehicleId) await updateVehicleById(vehicleId, bodyRequest);
       setShowModal(true);
       setTitle("Ok");
-      setBodyText(["Vehículo creado correctamente"]);
+      setBodyText(["Vehículo actualizado correctamente"]);
       setLeftButtonText("Cerrar");
       setRightButtonText("Enviar a reparación");
       setCounterPosition("left");
@@ -529,7 +554,7 @@ const VehicleRegistrationModification: React.FC<Props> = ({ mode }) => {
         onClose={() => {
           setShowModal(false);
         }}
-        onAction={() => handleSave()}
+        onAction={() => handleSendToRepair()}
         title={title}
         bodyText={bodyText}
         leftButtonText={leftButtonText}

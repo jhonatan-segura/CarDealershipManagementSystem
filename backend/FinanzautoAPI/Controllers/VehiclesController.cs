@@ -290,6 +290,29 @@ namespace FinanzautoAPI.Controllers
          return Ok(new { message = "Estado cambiado a 'Vendido'" });
       }
 
+      [HttpPatch("send-to-repair/{id}")]
+      [AllowAnonymous]
+      public async Task<IActionResult> SendToRepair(int id)
+      {
+         var vehicle = await _context.Vehicles.FindAsync(id);
+
+         if (vehicle == null)
+            return NotFound("Vehículo no encontrado");
+
+         var repairStatus = await _context.Set<VehicleStatus>()
+               .FirstOrDefaultAsync(s => s.Name.ToLower() == "reparación");
+
+         if (repairStatus == null)
+            return NotFound("No se encontró el estado 'Reparación'");
+
+         vehicle.VehicleStatusId = repairStatus.Id;
+
+         await _context.SaveChangesAsync();
+
+         return Ok(new { message = "Estado cambiado a 'Reparación'" });
+      }
+
+
       [HttpDelete("{id}")]
       public async Task<IActionResult> Delete(int id)
       {

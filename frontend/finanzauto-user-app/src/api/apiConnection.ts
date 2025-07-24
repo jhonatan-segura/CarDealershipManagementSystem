@@ -51,6 +51,11 @@ export const searchVehicleByPlate = async (plate: string) => {
   return response.data;
 };
 
+export const sendVehicleToRepair = async (id: string) => {
+  const response = await api.patch(`/vehicles/send-to-repair/${id}`);
+  return response.data;
+};
+
 export const updateVehicleById = async (id: string, bodyRequest: VehicleBodyRequest) => {
   const response = await api.put(`/vehicles/${id}`, bodyRequest);
   return response.data;
