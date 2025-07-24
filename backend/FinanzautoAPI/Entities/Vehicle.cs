@@ -21,6 +21,7 @@ namespace FinanzautoAPI.Entities
       public int ModelLineId { get; set; }
       public ModelLine? ModelLine { get; set; }
       public int VehicleStatusId { get; set; }
+      public int IsActive { get; set; } = 1;
       public VehicleStatus? VehicleStatus { get; set; }
       public ICollection<VehicleObservation> VehicleObservations { get; set; } = [];
       public ICollection<VehicleImage> VehicleImages { get; set; } = new List<VehicleImage>();

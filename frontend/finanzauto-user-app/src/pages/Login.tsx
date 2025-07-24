@@ -131,10 +131,10 @@ export default function Login() {
                 </div>
               </div>
               <div className="d-grid gap-2">
-                <button onClick={handleLogin} className="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                   Continuar
                 </button>
-                <button type="submit" className="btn btn-outline-secondary">
+                <button onClick={() => navigate("/register")} className="btn btn-outline-secondary">
                   Registrarme ahora
                 </button>
               </div>

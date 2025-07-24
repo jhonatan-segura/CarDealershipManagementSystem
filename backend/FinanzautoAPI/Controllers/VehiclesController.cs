@@ -25,8 +25,9 @@ namespace FinanzautoAPI.Controllers
              .Include(v => v.ModelLine)
                  .ThenInclude(ml => ml!.Brand)
              .Include(v => v.Color)
-             .Where(v => v.VehicleStatus!.Name == "Disponible" ||
-                        v.VehicleStatus!.Name == "En vitrina")
+             .Where(v => (v.VehicleStatus!.Name == "Disponible" ||
+                        v.VehicleStatus!.Name == "En vitrina") &&
+                        v.IsActive == 1)
              .Select(v => new VehicleWithObservationsDto
              {
                 Id = v.Id,
@@ -63,6 +64,7 @@ namespace FinanzautoAPI.Controllers
          var vehicles = await _context.Vehicles
             .Include(v => v.ModelLine)
                 .ThenInclude(ml => ml!.Brand)
+             .Where(v => v.IsActive == 1)
             .Select(v => new VehicleWithObservationsDtoNoImageData
             {
                Id = v.Id,
@@ -102,7 +104,7 @@ namespace FinanzautoAPI.Controllers
              .Include(v => v.ModelLine)
                  .ThenInclude(ml => ml!.Brand)
              .Include(v => v.Color)
-             .Where(v => v.Id == id)
+             .Where(v => v.Id == id && v.IsActive == 1)
              .Select(v => new VehicleWithObservationsDto
              {
                 Id = v.Id,
@@ -146,13 +148,14 @@ namespace FinanzautoAPI.Controllers
              .Include(v => v.ModelLine)
                  .ThenInclude(ml => ml!.Brand)
              .Include(v => v.Color)
-             .Where(v => v.Plate.Contains(searchText) ||
+             .Where(v => (v.Plate.Contains(searchText) ||
                      v.ModelLine!.Brand!.Name.Contains(searchText) ||
                      v.ModelLine.Name.Contains(searchText) ||
                      v.Color!.Name.Contains(searchText) ||
                      v.YearReleased.ToString().Contains(searchText) ||
                      v.Cost.ToString().Contains(searchText) ||
-                     v.VehicleStatus!.Name.Contains(searchText))
+                     v.VehicleStatus!.Name.Contains(searchText)) &&
+                     v.IsActive == 1)
              .Select(v => new VehicleWithObservationsDto
              {
                 Id = v.Id,
@@ -190,7 +193,7 @@ namespace FinanzautoAPI.Controllers
       public async Task<ActionResult<VehicleWithObservationsDto>> SearchByPlate(string plate)
       {
          var vehicle = await _context.Vehicles
-             .Where(v => v.Plate.ToUpper() == plate.ToUpper())
+             .Where(v => v.Plate.ToUpper() == plate.ToUpper() && v.IsActive == 1)
              .Select(v => new
              {
                 v.Id,
@@ -287,31 +290,6 @@ namespace FinanzautoAPI.Controllers
          return Ok(new { message = "Estado cambiado a 'Vendido'" });
       }
 
-      // [HttpPut]
-      // public async Task<ActionResult> Update(int id, VehicleCreateUpdateDto vehicleDto)
-      // {
-      //    var vehicle = await _context.Vehicles.SingleOrDefaultAsync(v => v.Id == id);
-
-      //    if (vehicle is null)
-      //       return NotFound(new { message = "No existe ningún vehiculo con este Id" });
-
-      //    _context.Entry(vehicle).State = EntityState.Modified;
-
-      //    try
-      //    {
-      //       await _context.SaveChangesAsync();
-      //    }
-      //    catch (DbUpdateConcurrencyException)
-      //    {
-      //       if (!_context.Vehicles.Any(v => v.Id == id))
-      //          return NotFound(new { message = "No existe ningún vehiculo con este Id" });
-
-      //       throw;
-      //    }
-
-      //    return NoContent();
-      // }
-
       [HttpDelete("{id}")]
       public async Task<IActionResult> Delete(int id)
       {
@@ -319,7 +297,7 @@ namespace FinanzautoAPI.Controllers
          if (vehicle == null)
             return NotFound(new { message = "No existe ningún vehiculo con este Id" });
 
-         _context.Vehicles.Remove(vehicle);
+         vehicle.IsActive = 0;
          await _context.SaveChangesAsync();
 
          return NoContent();
