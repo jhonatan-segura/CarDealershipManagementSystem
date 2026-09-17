@@ -1,136 +1,164 @@
-# 📦 Proyecto Full Stack (.NET 9 + React + SQL Server)
+# 📦 Full Stack Project (.NET 9 + React + SQL Server)
 
-Este repositorio contiene un sistema creado con:
+This repository contains a full-stack system built with:
 
-- 🖥 Backend: API REST construida con .NET 9
-- 🌐 Frontend: Interfaz de usuario hecha con React (Vite + TypeScript)
-- 🗄 Base de Datos: Scripts de SQL Server para crear y poblar la base de datos
-
----
-
-## Aplicativo web para usuarios
-![Imagen de WhatsApp 2025-07-24 a las 13 47 03_817a4612](https://github.com/user-attachments/assets/daeffbae-e34d-4b82-831c-e0f888b82171)
-
-*Pantalla de inicio creada*
----
-
-![Imagen de WhatsApp 2025-07-24 a las 13 46 01_6d30c5d8](https://github.com/user-attachments/assets/08427413-4f2d-4e11-99c7-cfa3a1fb770a)
-
-*Registro y edición de vehículos*
+* 🖥 **Backend:** REST API built with .NET 9
+* 🌐 **Frontend:** User interface built with React (Vite + TypeScript)
+* 🗄 **Database:** SQL Server scripts for creating and populating the database
 
 ---
 
-## Aplicativo web para clientes
+## 👤 Web Application for Users
 
-![Imagen de WhatsApp 2025-07-24 a las 14 17 24_4a5ae5b5](https://github.com/user-attachments/assets/af7e0aec-772e-4709-8a52-641dc3b61bf9)
+![WhatsApp Image 2025-07-24 at 13 47 03\_817a4612](https://github.com/user-attachments/assets/daeffbae-e34d-4b82-831c-e0f888b82171)
 
-*Vehículos guardados*
-
-
-✅ Requisitos
-
-Asegúrate de tener instaladas las siguientes herramientas:
-
-| Herramienta       | Versión Requerida |
-|-------------------|-------------------|
-| [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) | .NET 9.0 Preview o superior |
-| [Node.js](https://nodejs.org/)        | 18.x o superior |
-| [NPM](https://www.npmjs.com/)         | 9.x o superior |
-| [SQL Server](https://www.microsoft.com/en-us/sql-server/) | Express o superior |
-| [Visual Studio Code](https://code.visualstudio.com/) | (opcional) |
+*Home screen*
 
 ---
 
+![WhatsApp Image 2025-07-24 at 13 46 01\_6d30c5d8](https://github.com/user-attachments/assets/08427413-4f2d-4e11-99c7-cfa3a1fb770a)
 
-## 🔨 1. Aplicar la migración existente
+*Vehicle registration and editing*
 
-### 📁 Ubicación:
+---
+
+## 🚗 Web Application for Customers
+
+![WhatsApp Image 2025-07-24 at 14 17 24\_4a5ae5b5](https://github.com/user-attachments/assets/af7e0aec-772e-4709-8a52-641dc3b61bf9)
+
+*Saved vehicles*
+
+---
+
+## ✅ Requirements
+
+Make sure you have the following tools installed:
+
+| Tool                                                               | Required Version          |
+| ------------------------------------------------------------------ | ------------------------- |
+| [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) | .NET 9.0 Preview or later |
+| [Node.js](https://nodejs.org/)                                     | 18.x or later             |
+| [NPM](https://www.npmjs.com/)                                      | 9.x or later              |
+| [SQL Server](https://www.microsoft.com/en-us/sql-server/)          | Express or later          |
+| [Visual Studio Code](https://code.visualstudio.com/)               | Optional                  |
+
+---
+
+## 🔨 1. Apply the Existing Migration
+
+### 📁 Location:
+
 `/backend/FinanzautoAPI`
 
-Puedes crear la primera migración que carga datos semilla con:
-   ```bash
-  dotnet ef migrations add InitialCreate
-   ```
+You can create the initial migration, including the seed data, using:
 
-Este paso creará la base de datos con las tablas definidas por Entity Framework.
-   ```bash
-  dotnet ef database update
-   ```
-Si no tienes instalado dotnet-ef, puedes agregarlo con:
-   ```bash
-  dotnet tool install --global dotnet-ef
-   ```
-Puedes ejecutar el proyecto con:
-   ```bash
-  dotnet run
-   ```
+```bash
+dotnet ef migrations add InitialCreate
+```
 
+This command creates the migration based on the entities and relationships defined in Entity Framework.
+
+Apply the migration to create the database and its tables:
+
+```bash
+dotnet ef database update
+```
+
+If `dotnet-ef` is not installed, you can install it globally using:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+You can run the project using:
+
+```bash
+dotnet run
+```
 
 ---
 
-## ⚙️ 2. Ejecutar el Backend .NET 9
+## ⚙️ 2. Run the .NET 9 Backend
 
-### 📁 Ubicación:
+### 📁 Location:
+
 `/backend/FinanzautoAPI`
 
-Pasos:
+### Steps:
 
-1. Abre la terminal en la carpeta del backend.
-2. Restaura los paquetes:
-   ```bash
-   dotnet restore
+1. Open a terminal in the backend directory.
+2. Restore the required packages:
 
-3. Ejecuta la API con el comando:
-   ```bash
-   dotnet run
-   ```
+```bash
+dotnet restore
+```
 
-### ⚙️ `Appsettings.json`
+3. Run the API:
 
-Configura `appsettings.json` con tu cadena de conexión a SQL Server. Es importante tener en cuenta que el nombre de la base de datos es `FinanzautoDB` una vez se ejecuten los scripts.
+```bash
+dotnet run
+```
+
+### ⚙️ `appsettings.json`
+
+Configure `appsettings.json` with your SQL Server connection string. The database name should be `FinanzautoDB` after the database setup has been completed.
 
 ```json
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost;Database=FinanzautoDB;Trusted_Connection=True;TrustServerCertificate=True"
 }
 ```
+
 ---
 
-## 🌐 3. Ejecutar la aplicación para usuarios (React + Vite)
+## 🌐 3. Run the User Application (React + Vite)
 
-### 📁 Ubicación:
+### 📁 Location:
+
 `/frontend/finanzauto-user-app`
 
-Pasos:
-1. Abre la terminal en la carpeta del frontend.
-2. Instala dependencias:
-  ```bash
-  npm install
-  ```
-4. Ejecuta el servidor de desarrollo:
-  ```bash
-  npm run dev
-  ```
-5. Abre en tu navegador:
-  http://localhost:5173
+### Steps:
+
+1. Open a terminal in the frontend directory.
+2. Install the required dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open the following URL in your browser:
+
+http://localhost:5173
+
 ---
 
-## 🌐 3. Ejecutar la aplicación para clientes (React + Vite)
+## 🌐 4. Run the Customer Application (React + Vite)
 
-### 📁 Ubicación:
+### 📁 Location:
+
 `/frontend/client-app`
 
-Pasos:
-1. Abre la terminal en la carpeta del frontend.
-2. Instala dependencias:
-  ```bash
-  npm install
-  ```
-4. Ejecuta el servidor de desarrollo:
-  ```bash
-  npm run dev
-  ```
-5. Abre en tu navegador:
-  http://localhost:5180
+### Steps:
 
+1. Open a terminal in the frontend directory.
+2. Install the required dependencies:
 
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open the following URL in your browser:
+
+http://localhost:5180
